@@ -1,42 +1,169 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-size: 1.2rem;
+}
+.flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
+.wrapper {
+  background: linear-gradient(rgba(255, 255, 0, 0.815), green);
+  height: 100vh;
 }
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+.calculator {
+  background: grey;
+  width: 400px;
+  padding: 2rem 1.5rem;
+  border-radius: 9px;
+  display: grid;
+  gap: 1rem;
+  grid-template-areas:
+    'display display display display'
+    'ac c per divi '
+    'btn7 btn8 btn9 mul'
+    'btn4 btn5 btn6 minu'
+    'btn1 btn2 btn3 plus'
+    'btn0 dot equal equal';
+  transform: perspective(70rem) rotateX(30deg);
+  animation: moving 2s;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
+.display {
+  background-color: green;
+  padding: 1rem;
+  font-size: 1.5rem;
+  text-align: end;
+  font-size: bolder;
+  box-shadow: 0 10px 5px rgba(128, 128, 128, 0.834);
+  grid-area: display;
+  /* overflow: hidden; */
+  max-width: 350px;
+  overflow-wrap: break-word;
+}
+
+.calculator .btn {
+  background-color: yellow;
+  height: 50px;
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 10px 5px rgba(128, 128, 128, 0.834);
+}
+
+.calculator .btn:hover {
+  cursor: pointer;
+  background: rgba(0, 128, 0, 0.861);
+  transition: all 0.3s;
+}
+
+.btn-ac {
+  grid-area: ac;
+}
+
+.btn-c {
+  grid-area: c;
+}
+
+.btn-per {
+  grid-area: per;
+}
+
+.btn-divi {
+  grid-area: divi;
+}
+
+.btn-7 {
+  grid-area: btn7;
+}
+
+.btn-8 {
+  grid-area: btn8;
+}
+
+.btn-9 {
+  grid-area: btn9;
+}
+
+.btn-mul {
+  grid-area: mul;
+}
+
+.btn-4 {
+  grid-area: btn4;
+}
+
+.btn-5 {
+  grid-area: btn5;
+}
+
+.btn-6 {
+  grid-area: btn6;
+}
+
+.btn-minu {
+  grid-area: minu;
+}
+
+.btn-1 {
+  grid-area: btn1;
+}
+
+.btn-2 {
+  grid-area: btn2;
+}
+
+.btn-3 {
+  grid-area: btn3;
+}
+
+.btn- + {
+  grid-area: plus;
+}
+
+.btn-0 {
+  grid-area: btn0;
+}
+
+.btn-dot {
+  grid-area: dot;
+}
+
+.btn-equal {
+  grid-area: equal;
+}
+
+.prank {
+  background: red;
+  color: white;
+  animation: shape 0.5s;
+}
+
+@keyframes shape {
+  0% {
+    transform: translateX(10px);
   }
-  to {
-    transform: rotate(360deg);
+  50% {
+    transform: translateX(-10px);
+  }
+  80% {
+    transform: translateX(10px);
+  }
+  100% {
+    transform: translateX(-10px);
   }
 }
-
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
+@keyframes moving {
+  0% {
+    transform: perspective(10rem) rotateX(30deg);
   }
-}
-
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
+  100% {
+    transform: perspective(70rem) rotateX(30deg);
+  }
 }
