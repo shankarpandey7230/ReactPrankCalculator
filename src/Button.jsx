@@ -4,7 +4,7 @@ const Button = ({
   cls,
   label,
   handleButtonClick,
-  handleMouseDown,
+  handleOnMouseDown,
 
   isMouseDown,
 }) => {
@@ -20,7 +20,7 @@ const Button = ({
       }
       className={'btn ' + cls}
       onClick={() => handleButtonClick(label)}
-      onMouseDown={() => handleMouseDown(label)}
+      onMouseDown={() => handleOnMouseDown(label)}
     >
       {label}
     </div>
