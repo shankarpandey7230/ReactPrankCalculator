@@ -1,87 +1,138 @@
-import React, { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import './App.css';
-import Button from './Button';
 import { btns } from './Buttons';
+import Button from './Button';
+import aa from './assets/aa.wav';
 
+const audio = new Audio(aa);
 const operators = ['%', '/', '*', '-', '+'];
-
 const App = () => {
-  const [valueToDisplay, setValueToDisplay] = useState('');
+  const [strToDisplay, setStrToDisplay] = useState('');
   const [lastOperator, setLastOperator] = useState('');
+  const [isMouseDown, setIsMouseDown] = useState();
+  const [isPrank, setIsPrank] = useState(false);
 
-  const actionToDo = (value) => {
+  const isEventAttached = useRef(false);
+
+  useEffect(() => {
+    !isEventAttached.current &&
+      window.addEventListener('keypress', (e) => {
+        const value = e.key;
+        if (e.code.includes('Key')) {
+          return;
+        }
+        buttonAction(value);
+      });
+
+    isEventAttached.current = true;
+  }, []);
+
+  const buttonAction = (value) => {
+    isPrank && setIsPrank(false);
+
     if (value === 'AC') {
-      setValueToDisplay('');
+      setStrToDisplay('');
       return;
     }
+
     if (value === 'C') {
-      setValueToDisplay(valueToDisplay.slice(0, -1));
+      setStrToDisplay(strToDisplay.slice(0, -1));
       return;
     }
+
     if (value === '=' || value === 'Enter') {
       setLastOperator('');
-      const lastChar = valueToDisplay[valueToDisplay.length - 1];
-      // checking if last char is one of the operators
+      //get the last char
+      const lastChar = strToDisplay[strToDisplay.length - 1];
+
+      // check if it is one of the operators
       if (operators.includes(lastChar)) {
-        setValueToDisplay(valueToDisplay.slice(0, -1));
+        setStrToDisplay(strToDisplay.slice(0, -1));
       }
-      return totalValue();
+
+      return displayTotal();
     }
-    // showing only one last operator
+
+    // show only last clicked operator
     if (operators.includes(value)) {
       setLastOperator(value);
-      const lastChar = valueToDisplay[valueToDisplay.length - 1];
+      //get the last char
+      const lastChar = strToDisplay[strToDisplay.length - 1];
+
       if (operators.includes(lastChar)) {
-        setValueToDisplay(valueToDisplay.slice(0, -1) + value);
-        return;
-      }
-    }
-    if (value === '.') {
-      const lastOperatorIndex = valueToDisplay.lastIndexOf(lastOperator);
-      const lastNumberSet = valueToDisplay.slice(lastOperatorIndex);
-      // console.log(lastNumberSet)
-      if (lastNumberSet.includes('.')) {
+        setStrToDisplay(strToDisplay.slice(0, -1) + value);
         return;
       }
     }
 
-    setValueToDisplay(valueToDisplay + value);
+    //handle the dot click
+
+    if (value === '.') {
+      const lastOperatorIndex = strToDisplay.lastIndexOf(lastOperator);
+
+      const lastNumebrSet = strToDisplay.slice(lastOperatorIndex);
+
+      if (lastNumebrSet.includes('.')) {
+        return;
+      }
+
+      if (!lastOperator && strToDisplay.includes('.')) {
+        return;
+      }
+    }
+
+    setStrToDisplay((ps) => ps + value);
   };
 
-  // display total value
+  // calculate total
+  const displayTotal = () => {
+    const extraValue = randomValue();
+    if (extraValue) {
+      setIsPrank(true);
+      audio.play();
+    }
 
-  const totalValue = () => {
-    const prankValue = randomValue();
+    const total = eval(strToDisplay) + extraValue;
 
-    const total = eval(valueToDisplay) + prankValue;
-    console.log(total);
-    setValueToDisplay(total.toString());
-    // display(valueToDisplay);
+    setStrToDisplay(total.toString());
   };
 
   const randomValue = () => {
-    const num = Math.round(Math.random() * 10);
+    const num = Math.round(Math.random() * 10); // 0 - 10
     return num < 4 ? num : 0;
   };
+
   const handleButtonClick = (value) => {
-    // console.log(value);
-    actionToDo(value);
+    setIsMouseDown();
+    buttonAction(value);
   };
+
+  const handleOnMouseDown = (value) => {
+    setIsMouseDown(value);
+  };
+
   return (
-    <div className="wrapper flex-center">
-      <div className="calculator">
-        <div className="display">{valueToDisplay || '0.0'}</div>
-        {/* <div className="btn btn-ac">AC</div> */}
-        {btns.map((btn, i) => {
-          return (
-            <Button key={i} {...btn} handleButtonClick={handleButtonClick} />
-          );
-          {
-            /* return <Button key={i} cls={btn.cls} label={btn.label} />; */
-          }
-        })}
+    <>
+      {/* <!-- main container --> */}
+      <div className="wrapper flex-center">
+        <div className="calculator">
+          <div className={isPrank ? 'display  prank' : 'display  '}>
+            {strToDisplay || '0.00'}
+          </div>
+
+          {btns.map((btn, i) => (
+            <Button
+              key={i}
+              {...btn}
+              handleButtonClick={handleButtonClick}
+              handleOnMouseDown={handleOnMouseDown}
+              isMouseDown={isMouseDown}
+            />
+            // <Button key={i} cls={btn.cls} label={btn.label} />
+          ))}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

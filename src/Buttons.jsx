@@ -76,7 +76,3 @@ export const btns = [
     label: '=',
   },
 ];
-
-0;
-
-0;

@@ -16,3 +16,6 @@ Currently, two official plugins are available:
 3. Get the value of the pressed button and display on the screen
 
 4. Check the value and update it using use state
+
+5. Set the event to each button onmousedown
+6. Add the prank noise when there will be an extra value
