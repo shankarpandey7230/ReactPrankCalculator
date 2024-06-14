@@ -13,7 +13,7 @@ const Button = ({
       style={
         isMouseDown === label
           ? {
-              transform: isMouseDown ? 'scale(0.9)' : 'scale(1)',
+              transform: isMouseDown ? 'scale(0.8)' : 'scale(1)',
               transition: 'transform 0.2s',
             }
           : null
