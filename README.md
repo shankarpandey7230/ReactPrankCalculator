@@ -11,4 +11,8 @@ Currently, two official plugins are available:
 
 1. Define the buttons in calculator.
 
-2. try to use components so that that component reusability needs to be don
+2. try to use components so that that component reusability needs to be done
+
+3. Get the value of the pressed button and display on the screen
+
+4. Check the value and update it using use state
